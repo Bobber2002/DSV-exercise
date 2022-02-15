@@ -1,5 +1,6 @@
 import "./styles.css";
 import { useReducer, useRef, useState } from "react";
+import users from "./data";
 
 /** Instructions
    0. Fork this codesandbox and sync it with your github 
