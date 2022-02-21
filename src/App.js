@@ -35,27 +35,46 @@ function reducer(state, action) {
       return { count: state.count + 1 };
     case "decrement":
       return { count: state.count - 1 };
+    case "incrementByTwo":
+      return { count: state.count + 2 };
+    case "nearestOdd":
+      return { count: (state.count = Math.ceil(state.count) | 1) };
+    case "reset":
+      return { count: (state.count = 0) };
     default:
-      throw new Error();
+      return { count: state.count };
+    // throw new Error();
   }
 }
 
-
 export default function App() {
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState(data);
   const [text, setText] = useState("");
   const [countState, dispatch] = useReducer(reducer, { count: 0 });
   const ref = useRef(null);
-  
+
   useEffect(() => {
-      console.log(data);
+    setUsers(
+      users.filter((item) => {
+        return Object.values(item).some((array) => array >= 18);
+      })
+    );
   }, []);
+
+  // console.log(users);
 
   return (
     <div className="App">
       <p>Count: {countState.count}</p>
-      <button onClick={() => dispatch({ type: "decrement" })}>-</button>
+      <button onClick={() => dispatch({ type: "reset" })}>Reset</button>
+      <button
+        onClick={() => dispatch(countState.count >= 1 && { type: "decrement" })}
+      >
+        -
+      </button>
       <button onClick={() => dispatch({ type: "increment" })}>+</button>
+      <button onClick={() => dispatch({ type: "incrementByTwo" })}>+2</button>
+      <button onClick={() => dispatch({ type: "nearestOdd" })}>Odd</button>
       <input value={text} />
     </div>
   );
