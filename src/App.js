@@ -27,7 +27,7 @@ import { useReducer, useRef, useState, useEffect } from "react";
 
 import users from "./data";
 
-const data = users;
+const userData = users;
 
 function reducer(state, action) {
   switch (action.type) {
@@ -48,20 +48,43 @@ function reducer(state, action) {
 }
 
 export default function App() {
-  const [users, setUsers] = useState(data);
+  const [data, setData] = useState(userData);
+  const [userCoordinates, setUserCoordinates] = useState(0);
+  const [users, setUsers] = useState();
   const [text, setText] = useState("");
   const [countState, dispatch] = useReducer(reducer, { count: 0 });
   const ref = useRef(null);
 
   useEffect(() => {
-    setUsers(
-      users.filter((item) => {
+    setData(
+      data.filter((item) => {
         return Object.values(item).some((array) => array >= 18);
+      })
+    );
+
+    setUsers(
+      data.map(function (item) {
+        const con = {};
+
+        con.username = item.username;
+        con.adress = item.address;
+        con.age = item.age;
+        con.companyName = item.company.name;
+
+        return con;
       })
     );
   }, []);
 
+  useEffect(() => {
+    setUserCoordinates(
+      parseFloat(data.map((a) => a.address.geo.lng).reduce((a, b) => a + b))
+    );
+  }, [users]);
+
+  // console.log(data);
   // console.log(users);
+  console.log(userCoordinates);
 
   return (
     <div className="App">
