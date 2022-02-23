@@ -53,7 +53,7 @@ export default function App() {
   const [users, setUsers] = useState();
   const [text, setText] = useState("");
   const [countState, dispatch] = useReducer(reducer, { count: 0 });
-  const ref = useRef(null);
+  const inputRef = useRef(null);
 
   useEffect(() => {
     setData(
@@ -82,9 +82,17 @@ export default function App() {
     );
   }, [users]);
 
+  useEffect(() => {
+    inputRef.current.focus();
+  }, []);
+
   // console.log(data);
   // console.log(users);
   console.log(userCoordinates);
+
+  function handleChange(e) {
+    setText(e.target.value);
+  }
 
   return (
     <div className="App">
@@ -98,7 +106,7 @@ export default function App() {
       <button onClick={() => dispatch({ type: "increment" })}>+</button>
       <button onClick={() => dispatch({ type: "incrementByTwo" })}>+2</button>
       <button onClick={() => dispatch({ type: "nearestOdd" })}>Odd</button>
-      <input value={text} />
+      <input value={text} ref={inputRef} onChange={handleChange} />
     </div>
   );
 }
